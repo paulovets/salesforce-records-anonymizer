@@ -15,9 +15,9 @@ public without sharing class AnonymizationBatch implements Database.Batchable<so
     }
      
     public void execute(Database.BatchableContext BC, List<sObject> scope) {
-        final Set<Id> processedScopeIds = this.configuration.anonymizator.anonymize(scope, this.configuration.processingCustomMetadataConfig);
+        this.configuration.anonymizator.anonymize(scope, this.configuration.processingCustomMetadataConfig);
 
-        this.processedRecordsIds.addAll(processedScopeIds);
+        this.processedRecordsIds.addAll((new Map<Id, sObject>(scope)).keySet());
     }
   
     public void finish(Database.BatchableContext BC) {

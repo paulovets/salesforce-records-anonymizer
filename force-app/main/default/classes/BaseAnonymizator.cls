@@ -1,6 +1,6 @@
 public virtual without sharing class BaseAnonymizator implements Anonymizatable {
 
-    public Database.QueryLocator buildQueryLocator(AnonymizationConfiguration__mdt processingCustomMetadataConfig) {
+    public virtual Database.QueryLocator buildQueryLocator(AnonymizationConfiguration__mdt processingCustomMetadataConfig) {
         final List<Schema.FieldSetMember> fieldSetMembers = SchemaUtils.getFieldSetMembers(processingCustomMetadataConfig.SobjectAPIName__c, 
                                                                                            processingCustomMetadataConfig.FieldSetAPIName__c);
 
@@ -21,9 +21,9 @@ public virtual without sharing class BaseAnonymizator implements Anonymizatable 
         return Database.getQueryLocator(query);
     }
 
-    public Set<Id> anonymize(List<SObject> records, AnonymizationConfiguration__mdt processingCustomMetadataConfig) {
+    public virtual void anonymize(List<SObject> records, AnonymizationConfiguration__mdt processingCustomMetadataConfig) {
         if (records.isEmpty()) {
-            return new Set<Id>();
+            return;
         }
 
         final List<Schema.FieldSetMember> fieldSetMembers = SchemaUtils.getFieldSetMembers(processingCustomMetadataConfig.SobjectAPIName__c, 
@@ -47,9 +47,6 @@ public virtual without sharing class BaseAnonymizator implements Anonymizatable 
             toUpdate.add(record);
         }
 
-        Set<Id> result = (new Map<Id, sObject>(toDelete)).keySet();
-        result.addAll((new Map<Id, sObject>(toUpdate)).keySet());
-
         if (!toDelete.isEmpty()) {
             delete toDelete;
         }
@@ -57,11 +54,9 @@ public virtual without sharing class BaseAnonymizator implements Anonymizatable 
         if (!toUpdate.isEmpty()) {
             update toUpdate;
         }
-
-        return result;
     }
 
-    public void executePostProcessing(List<AnonymizationConfiguration__mdt> toBeProcessedCustomMetadataConfigs,
+    public virtual void executePostProcessing(List<AnonymizationConfiguration__mdt> toBeProcessedCustomMetadataConfigs,
                                       Set<Id> processedRecordsIds) {
         if (toBeProcessedCustomMetadataConfigs.isEmpty()) {
             return;

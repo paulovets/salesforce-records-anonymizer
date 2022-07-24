@@ -1,0 +1,9 @@
+<apex:page controller="ContactsAnonymizationReportController">
+    <ul>
+        <apex:repeat value="{! emails }" var="email">
+            <li>
+                <apex:outputText value="{! email }"></apex:outputText>
+            </li>
+        </apex:repeat>
+    </ul>
+</apex:page>
