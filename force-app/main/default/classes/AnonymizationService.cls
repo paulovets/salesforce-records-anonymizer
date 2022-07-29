@@ -34,7 +34,7 @@ public without sharing class AnonymizationService {
                 Type t = Type.forName(apexClassAPIName);
     
                 return (Anonymizatable)t.newInstance();
-            } catch(DmlException e) {
+            } catch(Exception e) {
                 System.debug('Could not instantiate an instance of ' + apexClassAPIName + ': ' + e.getMessage());
     
                 return new BaseAnonymizator();

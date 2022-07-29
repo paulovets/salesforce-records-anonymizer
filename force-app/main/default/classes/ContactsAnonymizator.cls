@@ -7,6 +7,7 @@ public without sharing class ContactsAnonymizator extends BaseAnonymizator {
 
         final String contactsIdsJson = JSON.serialize(ids);
 
+        // Maybe not the best way, as per base64 encoding makes a payload heavier
         final String base64ContactsIds = EncodingUtil.base64Encode(Blob.valueof(contactsIdsJson));
 
         PageReference ref = Page.ContactsAnonymizationReport;
