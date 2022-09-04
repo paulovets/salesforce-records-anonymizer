@@ -1,5 +1,7 @@
 public without sharing class ContactsAnonymizator extends BaseAnonymizator {
 
+    public static final String BASE64_CONTACTS_IDS = 'base64ContactsIds';
+
     public override void anonymize(List<SObject> records, AnonymizationConfiguration__mdt processingCustomMetadataConfig) {
         super.anonymize(records, processingCustomMetadataConfig);
 
@@ -11,7 +13,12 @@ public without sharing class ContactsAnonymizator extends BaseAnonymizator {
         final String base64ContactsIds = EncodingUtil.base64Encode(Blob.valueof(contactsIdsJson));
 
         PageReference ref = Page.ContactsAnonymizationReport;
-        ref.getParameters().put(Constants.BASE64_CONTACTS_IDS, base64ContactsIds);
+        ref.getParameters().put(ContactsAnonymizator.BASE64_CONTACTS_IDS, base64ContactsIds);
+
+        if(System.Test.isRunningTest()) {
+            return;
+        }
+
         Blob b = ref.getContentAsPDF();
 
         EmailUtils.sendEmail(

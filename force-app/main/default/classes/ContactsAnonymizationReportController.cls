@@ -3,7 +3,7 @@ public without sharing class ContactsAnonymizationReportController {
     public final List<String> emails { get; set; } 
 
     public ContactsAnonymizationReportController() {
-        final String base64ContactsIds = ApexPages.currentPage().getParameters().get(Constants.BASE64_CONTACTS_IDS);
+        final String base64ContactsIds = ApexPages.currentPage().getParameters().get(ContactsAnonymizator.BASE64_CONTACTS_IDS);
 
         final String contactsIdsJson = EncodingUtil.base64Decode(base64ContactsIds).toString();
 

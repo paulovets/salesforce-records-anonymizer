@@ -4,19 +4,17 @@ public virtual without sharing class BaseAnonymizator implements Anonymizatable 
         final List<Schema.FieldSetMember> fieldSetMembers = SchemaUtils.getFieldSetMembers(processingCustomMetadataConfig.SobjectAPIName__c, 
                                                                                            processingCustomMetadataConfig.FieldSetAPIName__c);
 
-        final List<String> fieldsPaths = new List<String>();
+        final List<String> fieldsPaths = new List<String> { 'LastModifiedDate' };
         for (Schema.FieldSetMember member: fieldSetMembers) {
             fieldsPaths.add(member.getFieldPath());
         }
 
-        Integer ttl = (Integer)(processingCustomMetadataConfig.DeletionTTLInDays__c == null ?
-            processingCustomMetadataConfig.AnonymizationTTLInDays__c :
-            processingCustomMetadataConfig.DeletionTTLInDays__c);
+        Integer ttl = (Integer)processingCustomMetadataConfig.AnonymizationTTLInDays__c;
 
         String query = 'SELECT ' + 
             String.join(fieldsPaths, ',') + 
             ' FROM ' + processingCustomMetadataConfig.SobjectAPIName__c + 
-            ' WHERE LastModifiedDate <: LAST_N_DAYS:' + ttl;
+            ' WHERE LastModifiedDate < LAST_N_DAYS:' + ttl;
 
         return Database.getQueryLocator(query);
     }

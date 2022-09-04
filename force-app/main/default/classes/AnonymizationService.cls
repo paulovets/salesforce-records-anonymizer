@@ -26,7 +26,7 @@ public without sharing class AnonymizationService {
 
             this.toBeProcessedCustomMetadataConfigs = clonedCustomMetadataConfigs;
 
-            this.anonymizator = this.buildAnonymizator(this.processingCustomMetadataConfig.SobjectAPIName__c);
+            this.anonymizator = this.buildAnonymizator(this.processingCustomMetadataConfig.ApexClass__c);
         }
 
         private Anonymizatable buildAnonymizator(String apexClassAPIName) {
